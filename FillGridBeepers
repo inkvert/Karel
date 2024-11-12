@@ -25,7 +25,7 @@ def move_up_if_clear():
         move_up()
 
 def place_in_line():
-    #Karel feels a line with beepers
+    #Karel fills a line with beepers
     while front_is_clear():
         move_and_place()
     put_beeper()
