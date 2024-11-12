@@ -1,0 +1,59 @@
+"""
+This is code for Karel to fill in a grid of any size with beepers
+"""
+from karel.stanfordkarel import *
+
+def main():
+    # runs function which makes Karel place beepers in every empty corner
+    place_all()
+    pass
+
+def place_all():
+    #combines functions for Karel to place beepers in every empty corner
+   while no_beepers_present():
+        fill_and_return()
+        move_up_if_clear()
+
+def fill_and_return():
+    #Karel fills a line with beepers then returns
+    place_in_line()
+    return_to_left()
+
+def move_up_if_clear():
+    #Karel moves up if there is a space above them
+    if left_is_clear():
+        move_up()
+
+def place_in_line():
+    #Karel feels a line with beepers
+    while front_is_clear():
+        move_and_place()
+    put_beeper()
+
+def return_to_left():
+    #Karel returns
+    turn_right()
+    turn_right()
+    while front_is_clear():
+        move()
+    turn_right()
+    turn_right()
+
+def move_up():
+    #Karel moves up
+    turn_left()
+    move()
+    turn_right()
+
+def move_and_place():
+    #Karel moves and places a beeper
+    put_beeper()
+    move()
+
+def turn_right():
+    #Karel turns right
+    for i in range(3):
+        turn_left()       
+
+if __name__ == '__main__':
+    main()
