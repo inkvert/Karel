@@ -1,0 +1,58 @@
+from karel.stanfordkarel import *
+
+"""
+File: main.py
+--------------------
+When you finish writing this file, Karel should be able to find
+the midpoint
+"""
+
+def main():
+    """
+    Karel finds the middle of any given row and places a beeper.
+    It achieves this by moving up twice and right once until it hits the upper wall of the grid.
+    Karel then travels back down to the bottom row, readjusts itself, and places the beeper.
+    In a world with an odd length, Karel will land in the middle corner.
+    In a world with an even length, Karel will land one corner to the left of the middle.
+    """
+    while front_is_clear():
+        move_up_twice_right_once()
+    return_to_bottom()
+    turn_left()
+    put_beeper()
+    pass
+
+def move_up_twice_right_once():
+    # This function combines the move_up_twice and move_right functions so that it can be repeated in main() with a while fuction.
+    if front_is_clear():
+        move_up_twice()
+        move_right()
+
+def move_up_twice():
+    # Karel moves up twice, adjusting its direction first and readjusting at the end.
+    turn_left()
+    if front_is_clear():
+        move()
+    if front_is_clear():
+        move()
+        turn_right()
+
+def move_right():
+    # Karel simply moves right, as the direction adjustment is covered in move_up_twice.
+    if front_is_clear():
+        move()
+
+def return_to_bottom():
+    # Once Karel reaches the upper wall of the grid, this function returns it to the bottom row and readjusts it.
+    for i in range(2):
+        turn_right()
+    while front_is_clear():
+        move()
+    
+def turn_right():
+    # Karel turns left three times in order to functionally turn right.
+    for i in range(3):
+        turn_left()
+
+if __name__ == '__main__':
+    main()
