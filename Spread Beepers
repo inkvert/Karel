@@ -4,7 +4,7 @@ def main():
     """
     Karel will move to a pile of beepers, pick one, and place it in the next available corner.
     Once the placed, Karel will then return to the pile
-    Current issues: add an end condition!
+    Grid should be 1 by X with Karel placed on the first corner and the pile on the second one across.
     """
     move()
     while beepers_present():
