@@ -1,0 +1,57 @@
+from karel.stanfordkarel import *
+
+def main():
+    """
+    Karel will move to a pile of beepers, pick one, and place it in the next available corner.
+    Once the placed, Karel will then return to the pile
+    Current issues: add an end condition!
+    """
+    move()
+    while beepers_present():
+     pick_and_spread_and_return()
+
+def pick_and_spread_and_return():
+    #Combines the pick and spread and return to pile.
+    pick_and_spread()
+    return_to_pile()
+
+def pick_and_spread():
+    #Karel picks up a beeper from the pile and puts it in the next available corner.
+    if beepers_present():
+        pick_beeper()
+        while beepers_present():
+            move()
+        if no_beepers_present():
+            put_beeper()
+    
+def return_to_pile():
+    #Karel returns to the pile to start again, and checks whether to return to the start if finished.
+    flip_around()
+    while beepers_present():
+        move()
+    flip_around()
+    move()
+    pick_beeper()
+    if no_beepers_present():
+        put_beeper()
+        flip_around()
+        move()
+        flip_around()
+    else:
+        put_beeper()
+
+def turn_right():
+    #Karel turns right by turning left three times, Zoolander style.
+    for i in range(3):
+        turn_left()
+
+def flip_around():
+    #Karel flips around by turning right twice.
+    for i in range(2):
+        turn_right()
+
+
+
+# don't change this code
+if __name__ == '__main__':
+    main()
