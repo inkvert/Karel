@@ -4,12 +4,13 @@ def main():
     """
     Creates a checkerboard pattern of beepers in any size world.
     Current bugs:
-    1): On even worlds, an additional beeper is wrongly placed at the end.
-    2): On odd worlds, Karel crashes on a move(). Adding front_is_blocked makes it loop infinitely.
+    1): On odd worlds, Karel moves a bit further than they need to.
 
     """
     while front_is_clear():
         loop_put_and_move()
+    if front_is_blocked():
+        end_turn_and_check()
 
 def loop_put_and_move():
     #Creates a while loop for put_and_move which includes a fencepost fix for odd worlds.
@@ -19,28 +20,51 @@ def loop_put_and_move():
         put_and_move()
 
 def put_and_move():
-    #Karel puts a beeper and moves, before detecting a wall and subsequently turning the corner.
+    #Combines three functions that, when looped, allow Karel to draw the pattern.
+    put_if_no_beepers()
+    move_two_if_clear()
+    repeat_rows()
+
+def put_if_no_beepers():
+    #If there is no beeper on a corner, Karel will place one.
     if no_beepers_present():
         put_beeper()
-    if front_is_clear():
-        move()
-    else:
-        turn_left()
-        move()
-        turn_left()
-    if front_is_clear():
-        move()
-    else:
-        turn_left()
-        move()
-        turn_left()
-    if beepers_present():
+
+def move_two_if_clear():
+    #Karel moves two corners if there is space, otherwise they climb to the next row.
+    for i in range(2):
+        if front_is_clear():
+            move()
+        else:
+            turn_left()
+            if front_is_clear():
+                move()
+            else:
+                turn_left()
+                turn_left()
+            turn_left()
+
+def repeat_rows():
+    #Karel goes down one corner and comes back up in order to maintain the row pattern.
+     if beepers_present():
         turn_left()
         if front_is_clear():
             move()
         if front_is_clear():
             move()
             turn_right()
+
+def end_turn_and_check():
+    #Karel turns at the end of their loop to undo two beepers in a row placed on even worlds.
+    turn_left()
+    turn_left()
+    move()
+    if beepers_present():
+        turn_left()
+        turn_left()
+        move()
+        if beepers_present():
+            pick_beeper()
 
 def turn_right():
     #Karel can only turn left, so this fabricates a right turn by turning left three times.
