@@ -1,13 +1,13 @@
 from karel.stanfordkarel import *
 
 def main():
-"""
+    """
     Creates a checkerboard pattern of beepers in any size world.
     Current bugs:
     1): On even worlds, an additional beeper is wrongly placed at the end.
     2): On odd worlds, Karel crashes on a move(). Adding front_is_blocked makes it loop infinitely.
 
-"""
+    """
     while front_is_clear():
         loop_put_and_move()
 
