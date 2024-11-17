@@ -3,24 +3,25 @@ from karel.stanfordkarel import *
 def main():
     """
     Creates a checkerboard pattern of beepers in any size world.
-    Current bugs:
-    1): On odd worlds, Karel moves a bit further than they need to.
+    Current issues:
+    1): Only functions on worlds 2x2 or greater.
 
     """
     while front_is_clear():
         loop_put_and_move()
     if front_is_blocked():
         end_turn_and_check()
+    return_home()
 
 def loop_put_and_move():
-    #Creates a while loop for put_and_move which includes a fencepost fix for odd worlds.
+    #Creates a while loop for put_and_move then includes a fencepost error fix for worlds with odd width.
     while front_is_clear():
         put_and_move()
     if front_is_blocked():
         put_and_move()
 
 def put_and_move():
-    #Combines three functions that, when looped, allow Karel to draw the pattern.
+    #Combines three functions that, when looped, allow Karel to draw the pattern on a grid of any size.
     put_if_no_beepers()
     move_two_if_clear()
     repeat_rows()
@@ -65,6 +66,33 @@ def end_turn_and_check():
         move()
         if beepers_present():
             pick_beeper()
+def return_home():
+    #Returns Karel if world is EvenxEven or EvenxOdd
+    if facing_west():
+        turn_left()
+        while front_is_clear():
+            move()
+        turn_left()
+    #Returns Karel if world is OddxOdd
+    if facing_south():
+        while front_is_clear():
+            move()
+        turn_right()
+        while front_is_clear():
+            move()
+        turn_left()
+        turn_left()
+    #Returns Karel if world is OddxEven
+    if facing_north():
+        turn_left()
+        turn_left()
+        while front_is_clear():
+            move()
+        turn_right()
+        while front_is_clear():
+            move()
+        turn_left()
+        turn_left()
 
 def turn_right():
     #Karel can only turn left, so this fabricates a right turn by turning left three times.
