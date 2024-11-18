@@ -1,0 +1,92 @@
+from karel.stanfordkarel import *
+
+def main():
+    """
+    A different approach to the Checkerboard Karel problem.
+    Karel must draw a pattern of alternating beepers on a grid of any size.
+    Previously, Karel was coded to place alternating beepers,
+    but here they complete the grid first and then pick up every other beeper while returning home.
+    Current issues:
+    1. Only tested so far on a 10x10 grid - will not work for rows or columns of odd size.
+
+    """
+    while front_is_clear():
+        put_two_rows()
+    adjust_direction()
+    while front_is_clear():
+        pick_two_rows()
+    turn_and_end()
+    
+def put_two_rows():
+    #Because alternating rows behave differently, putting beepers and moving is looped in groups of two rows.
+    put_and_move()
+    put_around_right_corner()
+    put_and_move()
+    put_around_left_corner()
+
+def put_and_move():
+    #Karel puts a beeper down and moves, which fills the grid with beepers.
+    while front_is_clear():
+        put_beeper()
+        move()
+
+def put_around_right_corner():
+    #Karel ascends the grid via the right corner.
+    put_beeper()
+    turn_left()
+    if front_is_clear():
+        move()
+        turn_left()
+
+def put_around_left_corner():
+    #Karel ascends the grid via the left corner.
+    put_beeper()
+    turn_right()
+    if front_is_clear():
+        move()
+        turn_right()
+
+def turn_right():
+    #Karel turns right by turning left three times.
+    for i in range(3):
+        turn_left()
+
+def adjust_direction():
+    #After filling the grid with beepers, Karel turns around before starting to make the pattern.
+    turn_right()
+
+def pick_two_rows():
+    #Because alternating rows behave differently, moving and picking is looped in groups of two rows.
+    move_and_pick()
+    pick_around_right_corner()
+    move_and_pick()
+    pick_around_left_corner()
+
+def move_and_pick():
+    #Karel moves, picks and moves, which creates the checkerboard pattern of beepers.
+    while front_is_clear():
+        move()
+        pick_beeper()
+        if front_is_clear():
+            move()
+
+def pick_around_right_corner():
+    #Karel descends the grid via the right corner.
+    turn_right()
+    move()
+    turn_right()
+
+def pick_around_left_corner():
+    #Karel descends the grid via the left corner.
+    turn_left()
+    if front_is_clear():
+        move()
+        turn_left()
+
+def turn_and_end():
+    #Adjusts Karel to their starting position and then ends.
+    turn_left()
+
+# don't change this code
+if __name__ == '__main__':
+    main()
